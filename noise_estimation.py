@@ -29,8 +29,8 @@ def find_saturated_blocks(image):
     :return:
     """
     mask = 255 * np.ones(image.shape, dtype=np.uint8)
-    mask[image <= 0.9 / 255] = 0
-    mask[image >= 254.1 / 255] = 0
+    mask[image <= 0.9] = 0
+    mask[image >= 254.1] = 0
     elt = np.ones((8, 8))
     mask = cv2.erode(mask, elt)
     return mask[:-7, :-7]
@@ -44,17 +44,10 @@ def estimate_uniform_noise(image):
     :return:
     """
     mask = find_saturated_blocks(image)
-    import time
-    t0 = time.time()
     square_blocks, means = compute_dct_blocks(image)
-    t1 = time.time()
     square_blocks = square_blocks[mask == 255]
     estimator = DCTNoiseEstimator(square_blocks)
     result = estimator.estimate_noise()
-    t2 = time.time()
-
-    print("DCT : %s" % (t1 - t0))
-    print("Est : %s" % (t2 - t1))
 
     return result
 

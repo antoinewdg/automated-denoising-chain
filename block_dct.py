@@ -73,7 +73,6 @@ def compute_dct_blocks(image):
 
     rows, cols = image.shape
 
-    # n_results = (rows - 7) * (cols - 7)
     new_shape = (rows - 7, cols - 7)
     d_image = cd.to_device(image)
     d_means = cd.device_array(new_shape, np.float32)

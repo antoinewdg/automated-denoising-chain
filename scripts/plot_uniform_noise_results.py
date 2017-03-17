@@ -10,8 +10,6 @@ def display_results(dir_name, title):
     for n in names:
         clean_name = n.split('/')[-1].split('.')[0]
         x, y = np.loadtxt(n)
-        x *= 255
-        y *= 255
         plt.plot(x, y, ':', label=clean_name)
 
     plt.plot(x, x, label='baseline', lw=7)
