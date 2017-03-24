@@ -18,6 +18,7 @@ def _compute_bin_sizes(n_elements, n_bins):
     return bin_sizes
 
 
+@jit()
 def find_saturated_blocks(image):
     """
     Create a mask identifying blocks containing saturated pixels.
@@ -28,11 +29,22 @@ def find_saturated_blocks(image):
     :param image: grayscale image
     :return:
     """
+    rows, cols = image.shape
     mask = 255 * np.ones(image.shape, dtype=np.uint8)
-    mask[image <= 0.9] = 0
-    mask[image >= 254.1] = 0
+
+    for i in range(rows - 1):
+        for j in range(cols - 1):
+            if image[i, j] == image[i + 1, j] and image[i, j] == image[i, j + 1] and image[i, j] == image[i + 1, j + 1]:
+                mask[i, j] = 0
+                mask[i + 1, j] = 0
+                mask[i, j + 1] = 0
+                mask[i + 1, j + 1] = 0
+    # mask[image <= 0.9] = 0
+    # mask[image >= 254.1] = 0
+    # cvu.display_blocking(mask)
     elt = np.ones((8, 8))
     mask = cv2.erode(mask, elt)
+    # cvu.display_blocking(mask)
     return mask[:-7, :-7]
 
 
@@ -54,8 +66,6 @@ def estimate_uniform_noise(image):
 
 def estimate_signal_dependent_noise(image, n_bins):
     mask = find_saturated_blocks(image)
-    # cvu.display_blocking(mask)
-    # cvu.display_blocking(image)
     sqr_blocks, means = compute_dct_blocks(image)
     sqr_blocks = sqr_blocks[mask == 255]
     means = means[mask == 255]

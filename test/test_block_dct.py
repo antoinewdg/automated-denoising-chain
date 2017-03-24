@@ -37,7 +37,7 @@ def _slow_dct_blocks(image):
 
 
 def test_dct_blocks():
-    image = cvu.load_grayscale('files/building.png')
+    image = cvu.load_grayscale('files/building_1.png')
     exp_blocks, exp_means = _slow_dct_blocks(image)
     act_blocks, act_means = compute_dct_blocks(image)
 

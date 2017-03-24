@@ -4,8 +4,8 @@ import numpy as np
 def add_uniform_noise(image, stdev, quantization=False):
     if stdev == 0:
         return np.copy(image)
-    rows, cols = image.shape
-    noise = np.random.normal(0, stdev, (rows, cols)).astype(np.float32)
+
+    noise = np.random.normal(0, stdev, image.shape).astype(np.float32)
     out = image + noise
     out[out > 255] = 255
     out[out < 0] = 0

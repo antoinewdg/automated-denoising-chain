@@ -3,8 +3,9 @@ import numpy as np
 # np.set_printoptions(threshold=np.inf)
 
 BLOCK_SIZE = 8
-LOW_FREQUENCY_THRESHOLD = 8
+LOW_FREQUENCY_THRESHOLD = 9
 ELEMENTS_PER_BIN = 42000
+
 
 def _build_frequency_map():
     m = np.zeros((BLOCK_SIZE, BLOCK_SIZE), dtype=bool)
